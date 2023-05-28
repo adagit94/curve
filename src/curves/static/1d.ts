@@ -1,6 +1,8 @@
-import { getSin } from "./helpers.js";
+import { getSin, linStep } from "../../helpers.js";
+import { invert } from "../../utils.js";
 
-export const lin = (initial: number, stepLength: number, points: number): number[] => {
+export const lin = (initial: number, interval: number, points: number): number[] => {
+    const stepLength = linStep(interval, points - 1);
     let numbers: number[] = [];
 
     for (let i = 0, n = initial; i < points; i++, n += stepLength) {
@@ -23,7 +25,35 @@ export const scalable = (initial: number, factor: number, points: number): numbe
 export const exp = (initialBase: number, exp: number, points: number): number[] => {
     let numbers: number[] = [];
 
-    for (let b = initialBase, i = 0; i < points; b = numbers[i] = Math.pow(b, exp), i++) {}
+    for (let b = initialBase, i = 0; i < points; b = Math.pow(b, exp), i++) {
+        numbers.push(b);
+    }
+
+    return numbers;
+};
+
+export const expCyclic = (initialBase: number, exponent: number, points: number, cycles: number, polarity: 1 | -1 = 1): number[] => {
+    const curve: number[] = exp(initialBase, exponent, points);
+    let cycle: number[] = [...curve, ...curve.slice(1, -1).reverse()];
+
+    let numbers: number[] = [];
+
+    for (let c = 0; c < cycles; c++) {
+        numbers.push(...cycle);
+    }
+
+    numbers.push(initialBase);
+    if (polarity === -1) numbers = invert(numbers);
+
+    return numbers;
+};
+
+export const expSeq = (base: number, initialExp: number, points: number, expIncrement = 1): number[] => {
+    let numbers: number[] = [];
+
+    for (let exp = initialExp, i = 0; i < points; exp += expIncrement, i++) {
+        numbers.push(Math.pow(base, exp));
+    }
 
     return numbers;
 };
@@ -49,7 +79,7 @@ export const sin = (x: number, points: number, cycles: number, polarity?: 1 | -1
     const angleStep = angle / steps;
     const amps = polarity !== undefined ? 1 : 2;
 
-    let a = 0
+    let a = 0;
     let numbers: number[] = [];
 
     for (let c = 0; c < cycles; c++) {

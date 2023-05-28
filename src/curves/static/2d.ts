@@ -1,6 +1,43 @@
-import { getSin } from "./helpers.js";
+import { getSin } from "../../helpers.js";
 
-export const scalable2d = (xStep: number, xFactor: number, y: number, yFactor: number) => {};
+export const lin2d = (x: number, xStep: number, y: number, yStep: number, points: number): [number, number][] => {
+    let coords: [number, number][] = [];
+
+    for (let i = 0, xCoord = x, yCoord = y; i < points; i++, xCoord += xStep, yCoord += yStep) {
+        coords.push([xCoord, yCoord]);
+    }
+
+    return coords;
+};
+
+export const scalable2d = (x: number, xFactor: number, y: number, yFactor: number, points: number): [number, number][] => {
+    let coords: [number, number][] = [];
+
+    for (let i = 0, xCoord = x, yCoord = y; i < points; i++, xCoord *= xFactor, yCoord *= yFactor) {
+        coords.push([xCoord, yCoord]);
+    }
+
+    return coords;
+};
+
+export const exp2d = (
+    t: number,
+    initialBase: number,
+    exp: number,
+    points: number,
+    optionals?: Partial<{ polarity: 1 | -1; tOffset: number }>
+): [number, number][] => {
+    const polarity = optionals?.polarity ?? 1;
+    const tOffset = optionals?.tOffset ?? 0;
+
+    let coords: [number, number][] = [];
+
+    for (let b = initialBase, x = tOffset, i = 0; i < points; b = Math.pow(b, exp), x += t, i++) {
+        coords.push([x, b * polarity]);
+    }
+
+    return coords;
+};
 
 export const triangle = (
     t: number,

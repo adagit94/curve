@@ -10,3 +10,5 @@ export const getSin = (angle: number, polarity?: 1 | -1): number => {
 
     return sin
 }
+
+export const clamp = (x: number, min = 0, max = 1): number => Math.max(min, Math.min(x, max))
