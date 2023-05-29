@@ -1,5 +1,4 @@
-import { getSin, linStep } from "../../helpers.js";
-import { invert } from "../../utils.js";
+import { linStep } from "../../helpers.js";
 
 export const lin = (initial: number, interval: number, points: number): number[] => {
     const stepLength = linStep(interval, points - 1);
@@ -32,7 +31,7 @@ export const exp = (initialBase: number, exp: number, points: number): number[] 
     return numbers;
 };
 
-export const expCyclic = (initialBase: number, exponent: number, points: number, cycles: number, polarity: 1 | -1 = 1): number[] => {
+export const expCyclic = (initialBase: number, exponent: number, points: number, cycles: number): number[] => {
     const curve: number[] = exp(initialBase, exponent, points);
     let cycle: number[] = [...curve, ...curve.slice(1, -1).reverse()];
 
@@ -43,7 +42,6 @@ export const expCyclic = (initialBase: number, exponent: number, points: number,
     }
 
     numbers.push(initialBase);
-    if (polarity === -1) numbers = invert(numbers);
 
     return numbers;
 };
@@ -73,26 +71,23 @@ export const alt = (a: number, b: number, cycles: number, valCount = 1): number[
     return numbers;
 };
 
-export const sin = (x: number, points: number, cycles: number, polarity?: 1 | -1): number[] => {
+export const sin = (x: number, points: number, cycles: number): number[] => {
     const steps = points - 1;
     const angle = Math.PI / 2;
     const angleStep = angle / steps;
-    const amps = polarity !== undefined ? 1 : 2;
 
     let a = 0;
     let numbers: number[] = [];
 
     for (let c = 0; c < cycles; c++) {
-        for (let amp = 0, pol = polarity ?? 1; amp < amps; amp++, pol *= -1) {
-            for (let i = 0, aStep = angleStep; i < 2; i++, aStep *= -1) {
-                for (let ii = 0; ii < steps; ii++, a += aStep) {
-                    numbers.push(x * getSin(a, pol));
-                }
+        for (let i = 0, aStep = angleStep; i < 2; i++, aStep *= -1) {
+            for (let ii = 0; ii < steps; ii++, a += aStep) {
+                numbers.push(x * Math.sin(a));
             }
         }
     }
 
-    numbers.push(x * getSin(a));
+    numbers.push(x * Math.sin(a));
 
     return numbers;
 };
