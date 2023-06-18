@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "curve",
+    "name": "curve_ts",
     "description": "Utility functions for generating number progressions in various curves.",
     "keywords": [
         "curve",
