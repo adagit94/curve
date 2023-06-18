@@ -1,4 +1,4 @@
-import { isEven } from "../../helpers.js";
+import { isEven } from "../helpers.js";
 import { getCyclicCommonSettings, getCyclicInitialData, iterateCycles } from "./utils.js";
 
 export type CommonOptionals = Partial<{ tOffset: number }>;
@@ -122,18 +122,23 @@ export const diagonalWithSustain: Cyclic = (tPerSegment, y, pointsPerSegment, cy
 
     const data = getCyclicInitialData(settings);
 
-    iterateCycles(cycles, settings, seg => {
-        const { xStep, yStep } = settings;
+    iterateCycles(
+        cycles,
+        settings,
+        seg => {
+            const { xStep, yStep } = settings;
 
-        if (isEven(seg)) {
-            data.steps.x += xStep;
-        } else {
-            data.steps.x += xStep;
-            data.steps.y += seg === 3 ? -yStep : yStep;
-        }
+            if (isEven(seg)) {
+                data.steps.x += xStep;
+            } else {
+                data.steps.x += xStep;
+                data.steps.y += seg === 3 ? -yStep : yStep;
+            }
 
-        data.coords.push([data.steps.x, data.steps.y]);
-    }, settings.withPhaseOffset);
+            data.coords.push([data.steps.x, data.steps.y]);
+        },
+        settings.withPhaseOffset
+    );
 
     return data.coords;
 };

@@ -1,5 +1,5 @@
 import { CyclicOptionals } from "./2d.js";
-import { clamp } from "../../helpers.js";
+import { clamp } from "../helpers.js";
 
 type CyclicCommonSettings = {
     segments: number;

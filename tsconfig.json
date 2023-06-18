@@ -1,13 +1,13 @@
 {
-    "include": ["./src/**/*"],
+    "include": [".src/**/*", "index.ts"],
     "compilerOptions": {
         "outDir": "./out",
         "target": "ES2022",
         "noImplicitAny": true,
-        "moduleResolution": "node",
+        "moduleResolution": "node"
     },
     "watchOptions": {
         "watchFile": "useFsEvents",
-        "watchDirectory": "useFsEvents",
+        "watchDirectory": "useFsEvents"
     }
 }

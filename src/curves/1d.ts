@@ -1,4 +1,4 @@
-import { linStep } from "../../helpers.js";
+import { linStep } from "../helpers.js";
 
 export const lin = (initial: number, length: number, points: number): number[] => {
     const stepLength = linStep(length, points - 1);
