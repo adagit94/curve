@@ -29,8 +29,8 @@ export default class Curve<F extends Cyclic> {
         this.#cycles = [];
     };
 
-    public tick = (t: number, y: number) => {
-        const cycle = this.#f(t, y, this.#points, 1, { tOffset: this.#tOffset, includeOrigin: this.#tOffset === 0, ...this.#optionals });
+    public tick = (tPerSegment: number, y: number) => {
+        const cycle = this.#f(tPerSegment, y, this.#points, 1, { tOffset: this.#tOffset, includeOrigin: this.#tOffset === 0, ...this.#optionals });
 
         this.#tOffset = cycle.at(-1)[0];
 

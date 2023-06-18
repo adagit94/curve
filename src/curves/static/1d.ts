@@ -1,7 +1,7 @@
 import { linStep } from "../../helpers.js";
 
-export const lin = (initial: number, interval: number, points: number): number[] => {
-    const stepLength = linStep(interval, points - 1);
+export const lin = (initial: number, length: number, points: number): number[] => {
+    const stepLength = linStep(length, points - 1);
     let numbers: number[] = [];
 
     for (let i = 0, n = initial; i < points; i++, n += stepLength) {

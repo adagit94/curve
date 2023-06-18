@@ -27,12 +27,10 @@ export const scalable2d = (x: number, xFactor: number, y: number, yFactor: numbe
     return coords;
 };
 
-export const exp2d = (t: number, initialBase: number, exp: number, points: number, optionals?: CommonOptionals): [number, number][] => {
-    const tOffset = optionals?.tOffset ?? 0;
-
+export const exp2d = (initialX: number, xIncrement: number, initialBase: number, exp: number, points: number): [number, number][] => {
     let coords: [number, number][] = [];
 
-    for (let b = initialBase, x = tOffset, i = 0; i < points; b = Math.pow(b, exp), x += t, i++) {
+    for (let b = initialBase, x = initialX, i = 0; i < points; b = Math.pow(b, exp), x += xIncrement, i++) {
         coords.push([x, b]);
     }
 

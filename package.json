@@ -1,0 +1,11 @@
+{
+    "version": "1.0.0",
+    "name": "curve",
+    "description": "Utility functions for generating number progressions in various curves.",
+    "keywords": [
+        "curve",
+        "wave"
+    ],
+    "homepage": "https://github.com/adagit94/curve",
+    "author": "Adam Pelc <adam.pelc94@gmail.com>"
+}
