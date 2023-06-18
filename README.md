@@ -1,2 +1,2 @@
 # Curve
-Small utility library for generating number progressions.
+Library for generating number progressions in various curves.
