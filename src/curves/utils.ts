@@ -72,7 +72,7 @@ export const getCyclicCommonSettings = (
 export const iterateCycles = (
     cycles: number,
     settings: CyclicCommonSettings,
-    handler: (seg: number) => boolean | void,
+    handler: (segment: number, step: number) => boolean | void,
     phaseOffset = false
 ): void => {
     const firstSeg = phaseOffset ? settings.phaseSegmentsOffset : 0;
@@ -80,7 +80,7 @@ export const iterateCycles = (
     for (let cycle = 0; cycle < cycles; cycle++) {
         for (let seg = firstSeg; seg < firstSeg + settings.segments; seg++) {
             for (let step = 0; step < settings.steps; step++) {
-                if (handler(seg)) return;
+                if (handler(seg, step)) return;
             }
         }
     }

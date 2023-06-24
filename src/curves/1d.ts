@@ -1,4 +1,4 @@
-import { linStep } from "../helpers.js";
+import { linStep, log, root } from "../helpers.js";
 
 export const lin = (initial: number, length: number, points: number): number[] => {
     const stepLength = linStep(length, points - 1);
@@ -54,6 +54,18 @@ export const expSeq = (base: number, initialExp: number, points: number, expIncr
     }
 
     return numbers;
+};
+
+export const expRoot = (x: number, exp: number): number[] => {
+    const base = root(x, exp)
+    
+    return scalable(base, base, exp);
+};
+
+export const expLog = (x: number, base: number): number[] => {
+    const exp = log(x, base)
+    
+    return scalable(base, base, exp);
 };
 
 export const alt = (a: number, b: number, cycles: number, valCount = 1): number[] => {

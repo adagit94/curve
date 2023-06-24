@@ -1,4 +1,5 @@
 import { isEven } from "../helpers.js";
+import { getYs, reverse } from "../utils.js";
 import { getCyclicCommonSettings, getCyclicInitialData, iterateCycles } from "./utils.js";
 
 export type CommonOptionals = Partial<{ tOffset: number }>;
@@ -35,6 +36,39 @@ export const exp2d = (initialX: number, xIncrement: number, initialBase: number,
     }
 
     return coords;
+};
+
+export const expCyclic2d = (
+    tPerSegment: number,
+    base: number,
+    exp: number,
+    pointsPerSegment: number,
+    cycles: number,
+    optionals?: Omit<CyclicOptionals, "yOffset">
+): [number, number][] => {
+    const settings = getCyclicCommonSettings(tPerSegment, 0, 2, pointsPerSegment, cycles, optionals);
+    const data = getCyclicInitialData({ ...settings, includeOrigin: false });
+    const asc = getYs(exp2d(settings.tOffset, data.steps.x, base, exp, pointsPerSegment));
+    const desc = reverse(asc);
+    const order = settings.withPhaseOffset ? [desc, asc] : [asc, desc]
+
+    if (settings.includeOrigin) data.coords.push([data.steps.x, order[0][0]])
+
+    order[0].splice(0, 1)
+    order[1].splice(0, 1)
+    
+    iterateCycles(
+        cycles,
+        settings,
+        (segment, step) => {
+            const x = (data.steps.x += settings.xStep);
+            const y = order[segment][step];
+
+            data.coords.push([x, y]);
+        }
+    );
+
+    return data.coords;
 };
 
 export const diagonal: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optionals) => {
