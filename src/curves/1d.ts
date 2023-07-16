@@ -56,15 +56,28 @@ export const expSeq = (base: number, initialExp: number, points: number, expIncr
     return numbers;
 };
 
+export const expSeqAdditive = (base: number, initialExp: number, points: number, expIncrement = 1): number[] => {
+    let numbers: number[] = [];
+
+    for (let exp = initialExp, sum = 0, i = 0; i < points; exp += expIncrement, i++) {
+        const num = Math.pow(base, exp);
+
+        sum += num;
+        numbers.push(sum);
+    }
+
+    return numbers;
+};
+
 export const expRoot = (x: number, exp: number): number[] => {
-    const base = root(x, exp)
-    
+    const base = root(x, exp);
+
     return scalable(base, base, exp);
 };
 
 export const expLog = (x: number, base: number): number[] => {
-    const exp = log(x, base)
-    
+    const exp = log(x, base);
+
     return scalable(base, base, exp);
 };
 
