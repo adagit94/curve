@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "@adam94/curve",
+    "name": "curve-ts",
     "description": "Library for generating number progressions in various curves.",
     "keywords": [
         "curve",
