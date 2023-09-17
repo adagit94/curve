@@ -6,6 +6,15 @@ export type CommonOptionals = Partial<{ tOffset: number }>;
 
 export type CyclicOptionals = CommonOptionals & Partial<{ yOffset: number; phaseSegmentsOffset: number; includeOrigin: boolean }>;
 
+/**
+ * @param tPerSegment time interval till the amplitudes peak
+ * @param y amplitudes peak value
+ * @param pointsPerSegment number of values per segment (e.g. value of 2 stands for initial, amplitude and final value in case of full cycle)
+ * @param cycles number of cycles (single polarity)
+ * @param optionals see {@link CyclicOptionals} type
+ * @return Array of x (typically time) and y (typically some intensity) values
+ * @note segment represents half of the single polarity cycle
+ */
 export type Cyclic = (tPerSegment: number, y: number, pointsPerSegment: number, cycles: number, optionals?: CyclicOptionals) => [number, number][];
 
 export const lin2d = (x: number, xStep: number, y: number, yStep: number, points: number): [number, number][] => {

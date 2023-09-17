@@ -1,5 +1,4 @@
-import { getYs } from "./utils.js";
-import { Cyclic } from "./curves/2d.js";
+import { Cyclic } from "./2d.js";
 
 export type Values = (number | [number, number])[];
 type Optionals = Partial<{
@@ -8,16 +7,14 @@ type Optionals = Partial<{
 }>;
 
 export default class Curve<F extends Cyclic> {
-    constructor(f: F, points: number, dimensions: 1 | 2, optionals: Optionals = {}) {
+    constructor(f: F, points: number, optionals: Optionals = {}) {
         this.#f = f;
         this.#points = points;
-        this.#dimensions = dimensions;
         this.#optionals = optionals;
     }
 
     #f: F;
     #points: number;
-    #dimensions: 1 | 2;
     #optionals: Optionals;
     #tOffset = 0;
     #cycles: Values = [];
@@ -33,15 +30,8 @@ export default class Curve<F extends Cyclic> {
         const cycle = this.#f(tPerSegment, y, this.#points, 1, { tOffset: this.#tOffset, includeOrigin: this.#tOffset === 0, ...this.#optionals });
 
         this.#tOffset = cycle.at(-1)[0];
-
-        if (this.#dimensions === 1) {
-            const values = getYs(cycle);
-
-            this.#cycles.push(...values);
-            return values;
-        }
-
         this.#cycles.push(...cycle);
+
         return structuredClone(cycle);
     };
 }

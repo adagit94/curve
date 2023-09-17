@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "name": "curve-ts",
     "description": "Library for generating number progressions in various curves.",
     "keywords": [
@@ -7,5 +7,12 @@
         "wave"
     ],
     "homepage": "https://github.com/adagit94/curve",
-    "author": "Adam Pelc <adam.pelc94@gmail.com>"
+    "author": "Adam Pelc <adam.pelc94@gmail.com>",
+    "scripts": {
+        "doc": "typedoc"
+    },
+    "devDependencies": {
+        "typedoc": "^0.25.1",
+        "typescript": "^5.1.6"
+    }
 }

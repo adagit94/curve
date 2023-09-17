@@ -9,5 +9,11 @@
     "watchOptions": {
         "watchFile": "useFsEvents",
         "watchDirectory": "useFsEvents"
+    },
+    "typedocOptions": {
+        "out": "./docs",
+        "entryPoints": ["src/**/*"],
+        "entryPointStrategy": "resolve",
+        "cleanOutputDir": true
     }
 }
