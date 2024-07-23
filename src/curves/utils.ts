@@ -85,3 +85,41 @@ export const iterateCycles = (
         }
     }
 };
+
+/**
+ * @description Function searchs for interval between two values in which passed value lays and returns computed value for second axis based on ratio distance on first one.
+ * @param axis Axis on which passed value lays and for which find interpolation interval.
+ * @param value Value for passed axis. It should lay inside of value range and can be located anywhere, not just exactly on passed values.
+ * @param values Value range for both axes.
+ * @return Computed value for second axis based on ratio distance inside found interval on first one or undefined if interval cannot be found.
+ */
+export const getInterpolatedValue = (axis: "x" | "y", value: number, values: [number, number][]): number | undefined => {
+    const fromAxisIndex = axis === "x" ? 0 : 1
+    const forAxisIndex = axis === "x" ? 1 : 0
+
+    let vals: [[number, number], [number, number]] | undefined
+
+    for (let i = 1; i < values.length; i++) {
+        const v1 = values[i - 1]
+        const v2 = values[i]
+
+        if ((value >= v1[fromAxisIndex] && value <= v2[fromAxisIndex]) || (value <= v1[fromAxisIndex] && value >= v2[fromAxisIndex])) {
+            vals = [v1, v2]
+            break
+        }
+    }
+
+    if (vals) {
+        const [v1, v2] = vals
+
+        const fromInterval = v2[fromAxisIndex] - v1[fromAxisIndex]
+        const fromIntervalRatio = (value - v1[fromAxisIndex]) / fromInterval
+
+        const forInterval = v2[forAxisIndex] - v1[forAxisIndex]
+        const forIntervalValue = v1[forAxisIndex] + forInterval * fromIntervalRatio
+
+        return forIntervalValue
+    }
+
+    return undefined
+}
