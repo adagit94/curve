@@ -18,33 +18,33 @@ export type CyclicOptionals = CommonOptionals & Partial<{ yOffset: number; phase
 export type Cyclic = (tPerSegment: number, y: number, pointsPerSegment: number, cycles: number, optionals?: CyclicOptionals) => [number, number][];
 
 export const lin2d = (x: number, xStep: number, y: number, yStep: number, points: number): [number, number][] => {
-    let coords: [number, number][] = [];
+    let values: [number, number][] = [];
 
     for (let i = 0, xCoord = x, yCoord = y; i < points; i++, xCoord += xStep, yCoord += yStep) {
-        coords.push([xCoord, yCoord]);
+        values.push([xCoord, yCoord]);
     }
 
-    return coords;
+    return values;
 };
 
-export const scalable2d = (x: number, xFactor: number, y: number, yFactor: number, points: number): [number, number][] => {
-    let coords: [number, number][] = [];
+export const scaled2d = (x: number, xFactor: number, y: number, yFactor: number, points: number): [number, number][] => {
+    let values: [number, number][] = [];
 
     for (let i = 0, xCoord = x, yCoord = y; i < points; i++, xCoord *= xFactor, yCoord *= yFactor) {
-        coords.push([xCoord, yCoord]);
+        values.push([xCoord, yCoord]);
     }
 
-    return coords;
+    return values;
 };
 
 export const exp2d = (initialX: number, xIncrement: number, initialBase: number, exp: number, points: number): [number, number][] => {
-    let coords: [number, number][] = [];
+    let values: [number, number][] = [];
 
     for (let b = initialBase, x = initialX, i = 0; i < points; b = Math.pow(b, exp), x += xIncrement, i++) {
-        coords.push([x, b]);
+        values.push([x, b]);
     }
 
-    return coords;
+    return values;
 };
 
 export const expCyclic2d = (
@@ -61,7 +61,7 @@ export const expCyclic2d = (
     const desc = reverse(asc);
     const order = settings.withPhaseOffset ? [desc, asc] : [asc, desc]
 
-    if (settings.includeOrigin) data.coords.push([data.steps.x, order[0][0]])
+    if (settings.includeOrigin) data.values.push([data.steps.x, order[0][0]])
 
     order[0].splice(0, 1)
     order[1].splice(0, 1)
@@ -73,11 +73,11 @@ export const expCyclic2d = (
             const x = (data.steps.x += settings.xStep);
             const y = order[segment][step];
 
-            data.coords.push([x, y]);
+            data.values.push([x, y]);
         }
     );
 
-    return data.coords;
+    return data.values;
 };
 
 export const diagonal: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optionals) => {
@@ -103,12 +103,12 @@ export const diagonal: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optio
             const x = (data.steps.x += settings.xStep);
             const y = (data.steps.y += yStep);
 
-            data.coords.push([x, y]);
+            data.values.push([x, y]);
         },
         settings.withPhaseOffset
     );
 
-    return data.coords;
+    return data.values;
 };
 
 export const rectangular: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optionals) => {
@@ -142,12 +142,12 @@ export const rectangular: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, op
                     break;
             }
 
-            data.coords.push([data.steps.x, data.steps.y]);
+            data.values.push([data.steps.x, data.steps.y]);
         },
         settings.withPhaseOffset
     );
 
-    return data.coords;
+    return data.values;
 };
 
 export const diagonalWithSustain: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optionals) => {
@@ -178,12 +178,12 @@ export const diagonalWithSustain: Cyclic = (tPerSegment, y, pointsPerSegment, cy
                 data.steps.y += seg === 3 ? -yStep : yStep;
             }
 
-            data.coords.push([data.steps.x, data.steps.y]);
+            data.values.push([data.steps.x, data.steps.y]);
         },
         settings.withPhaseOffset
     );
 
-    return data.coords;
+    return data.values;
 };
 
 export const sin2d: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optionals) => {
@@ -202,7 +202,7 @@ export const sin2d: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optional
     const data = getCyclicInitialData({ ...settings, includeOrigin: false });
 
     if (settings.includeOrigin) {
-        data.coords.push([data.steps.x, settings.yOffset + y * Math.sin(angle)]);
+        data.values.push([data.steps.x, settings.yOffset + y * Math.sin(angle)]);
     }
 
     iterateCycles(
@@ -212,10 +212,10 @@ export const sin2d: Cyclic = (tPerSegment, y, pointsPerSegment, cycles, optional
             data.steps.x += settings.xStep;
             angle += isEven(seg) ? angleStep : -angleStep;
 
-            data.coords.push([data.steps.x, settings.yOffset + y * Math.sin(angle)]);
+            data.values.push([data.steps.x, settings.yOffset + y * Math.sin(angle)]);
         },
         settings.withPhaseOffset
     );
 
-    return data.coords;
+    return data.values;
 };

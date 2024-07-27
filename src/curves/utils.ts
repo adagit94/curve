@@ -21,17 +21,17 @@ type Steps = {
 };
 
 type CyclicData = {
-    coords: [number, number][];
+    values: [number, number][];
     steps: Steps;
 };
 
 export const getCyclicInitialData = (settings: CyclicCommonSettings): CyclicData => {
     const steps: Steps = { x: settings.tOffset, y: settings.yOffset };
-    const coords: [number, number][] = [];
+    const values: [number, number][] = [];
 
-    if (settings.includeOrigin) coords.push([steps.x, steps.y]);
+    if (settings.includeOrigin) values.push([steps.x, steps.y]);
 
-    return { steps, coords };
+    return { steps, values };
 };
 
 export const getCyclicCommonSettings = (
